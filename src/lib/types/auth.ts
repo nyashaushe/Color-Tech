@@ -3,7 +3,7 @@ export interface RegisterFormData {
   password: string;
   fullName: string;
   phone: string;
-  role: 'client' | 'admin';
+  role?: 'client' | 'admin';
 }
 
 export interface AuthResponse {

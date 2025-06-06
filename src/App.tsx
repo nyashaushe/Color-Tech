@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import Layout from "@/components/Layout";
 import Navigation from "@/components/Navigation";
 import Home from "./pages/Home";
@@ -36,44 +37,46 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router basename="/Color-Tech/">
-          <LayoutWrapper>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              
-              {/* Protected Admin Routes */}
-              <Route 
-                path="/admin/*" 
-                element={
-                  <ProtectedRoute allowedRoles={['admin']}>
-                    <AdminRoutes />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Protected Client Routes */}
-              <Route 
-                path="/client/*" 
-                element={
-                  <ProtectedRoute allowedRoles={['client']}>
-                    <ClientRoutes />
-                  </ProtectedRoute>
-                } 
-              />
-            </Routes>
-            <Toaster />
-          </LayoutWrapper>
-        </Router>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router basename="/Color-Tech/">
+            <LayoutWrapper>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                
+                {/* Protected Admin Routes */}
+                <Route 
+                  path="/admin/*" 
+                  element={
+                    <ProtectedRoute allowedRoles={['admin']}>
+                      <AdminRoutes />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Protected Client Routes */}
+                <Route 
+                  path="/client/*" 
+                  element={
+                    <ProtectedRoute allowedRoles={['client']}>
+                      <ClientRoutes />
+                    </ProtectedRoute>
+                  } 
+                />
+              </Routes>
+              <Toaster />
+            </LayoutWrapper>
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

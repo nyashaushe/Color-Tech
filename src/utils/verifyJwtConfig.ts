@@ -29,7 +29,9 @@ export const verifyJwtConfig = (): VerificationResult => {
       };
     }
     
-    if (secret === 'your-secret-key-here' || secret === 'your_secret_key_change_this_in_production') {
+    if (secret === 'your-secret-key-here' || 
+        secret === 'your_secret_key_change_this_in_production' ||
+        secret === 'please_set_a_strong_jwt_secret_in_env_file') {
       return {
         success: false,
         message: 'JWT secret is using a default value. Please set a strong secret in your environment variables.'

@@ -29,11 +29,30 @@ async function apiCall(endpoint, method = 'GET', body = null) {
   
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, options);
+    
+    // Check if the response is OK before parsing JSON
+    if (!response.ok) {
+      const errorText = await response.text();
+      return { 
+        status: response.status, 
+        data: { 
+          message: `API error: ${response.status} ${response.statusText}`,
+          details: errorText
+        } 
+      };
+    }
+    
     const data = await response.json();
     return { status: response.status, data };
   } catch (error) {
     console.error(`Error calling ${endpoint}:`, error);
-    return { status: 500, data: { message: error.message } };
+    return { 
+      status: 500, 
+      data: { 
+        message: `Network or parsing error: ${error.message}`,
+        error: error 
+      } 
+    };
   }
 }
 

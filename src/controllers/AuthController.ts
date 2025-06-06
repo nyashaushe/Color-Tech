@@ -2,13 +2,14 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UserModel, { User } from '../models/User';
 import db from '../utils/db';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import config from '../config';
 import jwtConfig from '../config/jwt';
+import logger from '../utils/logger';
 
 // Helper function to verify password
 async function verifyPassword(user: User, password: string): Promise<boolean> {
-  return bcrypt.compare(password, user.password);
+  return bcryptjs.compare(password, user.password);
 }
 
 // Helper function to generate JWT token
@@ -68,7 +69,7 @@ class AuthController {
         token
       });
     } catch (error) {
-      console.error('Registration error:', error);
+      logger.error('Registration error:', error);
       return res.status(500).json({ message: 'Server error' });
     }
   }
@@ -88,6 +89,9 @@ class AuthController {
       if (!isPasswordValid) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
+      
+      // Update last login timestamp
+      await UserModel.updateLastLogin(user.id);
       
       // Generate JWT token
       const token = generateToken(user);
@@ -111,7 +115,7 @@ class AuthController {
         token
       });
     } catch (error) {
-      console.error('Login error:', error);
+      logger.error('Login error:', error);
       return res.status(500).json({ message: 'Server error' });
     }
   }
@@ -130,7 +134,7 @@ class AuthController {
       
       return res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
-      console.error('Logout error:', error);
+      logger.error('Logout error:', error);
       return res.status(500).json({ message: 'Server error' });
     }
   }
@@ -149,7 +153,7 @@ class AuthController {
       
       return res.status(200).json({ user });
     } catch (error) {
-      console.error('Get profile error:', error);
+      logger.error('Get profile error:', error);
       return res.status(500).json({ message: 'Server error' });
     }
   }
@@ -178,7 +182,7 @@ class AuthController {
         user: updatedUser
       });
     } catch (error) {
-      console.error('Update profile error:', error);
+      logger.error('Update profile error:', error);
       return res.status(500).json({ message: 'Server error' });
     }
   }

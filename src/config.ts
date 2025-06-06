@@ -20,10 +20,6 @@ export const config = {
     port: parseInt(process.env.DB_PORT || '5432'),
   },
   
-  // JWT configuration
-  jwtSecret: process.env.JWT_SECRET || 'your-secret-key',
-  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '24h',
-  
   // File upload configuration
   uploads: {
     maxSize: parseInt(process.env.MAX_FILE_SIZE || '5242880'), // 5MB in bytes

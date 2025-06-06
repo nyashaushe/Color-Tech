@@ -13,6 +13,8 @@ import serviceRoutes from './routes/services';
 import reviewRoutes from './routes/reviews';
 import contentRoutes from './routes/content';
 import inventoryRoutes from './routes/inventory';
+import blogRoutes from './routes/blog';
+import userRoutes from './routes/users'; // Import the new user routes
 import { verifyJwtConfig } from './utils/verifyJwtConfig';
 
 // Create Express app
@@ -44,6 +46,8 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/blog-posts', blogRoutes);
+app.use('/api/users', userRoutes); // Mount the user routes
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -117,4 +121,4 @@ process.on('SIGINT', () => {
   });
 });
 
-export default app; 
+export default app;

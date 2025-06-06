@@ -1,6 +1,6 @@
 import db from '../utils/db';
 import logger from '../utils/logger';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 export interface User {
   id: number;
@@ -129,7 +129,7 @@ class UserModel {
       const { email, password, first_name, last_name, role, phone, is_active } = userData;
       
       // Hash password
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcryptjs.hash(password, 10);
       
       const query = `
         INSERT INTO users (email, password, first_name, last_name, role, phone, is_active, created_at, updated_at)
@@ -169,7 +169,7 @@ class UserModel {
       }
       
       if (userData.password !== undefined) {
-        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        const hashedPassword = await bcryptjs.hash(userData.password, 10);
         updates.push(`password = $${paramCounter++}`);
         values.push(hashedPassword);
       }

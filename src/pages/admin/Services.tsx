@@ -67,17 +67,20 @@ const AdminServices = () => {
     event.preventDefault();
     setIsSubmitting(true);
     
-    const formData = new FormData(event.currentTarget);
-    const serviceData: CreateServiceData = {
-      name: formData.get('name') as string,
-      description: formData.get('description') as string,
-      basePrice: Number(formData.get('basePrice')),
-      durationMinutes: Number(formData.get('durationMinutes')),
-      category: formData.get('category') as string,
-    };
-    
     try {
+      const formData = new FormData(event.currentTarget);
+      const serviceData: CreateServiceData = {
+        name: formData.get('name') as string,
+        description: formData.get('description') as string,
+        basePrice: Number(formData.get('basePrice')),
+        durationMinutes: Number(formData.get('durationMinutes')),
+        category: formData.get('category') as string,
+      };
+      
+      console.log('Creating service with data:', serviceData);
       const newService = await createService(serviceData);
+      console.log('Service created successfully:', newService);
+      
       setServices([...services, newService]);
       setIsDialogOpen(false);
       toast({
@@ -102,18 +105,22 @@ const AdminServices = () => {
     if (!editingService) return;
     
     setIsSubmitting(true);
-    const formData = new FormData(event.currentTarget);
-    const serviceData: UpdateServiceData = {
-      name: formData.get('name') as string,
-      description: formData.get('description') as string,
-      basePrice: Number(formData.get('basePrice')),
-      durationMinutes: Number(formData.get('durationMinutes')),
-      category: formData.get('category') as string,
-      status: formData.get('status') as 'active' | 'inactive',
-    };
     
     try {
+      const formData = new FormData(event.currentTarget);
+      const serviceData: UpdateServiceData = {
+        name: formData.get('name') as string,
+        description: formData.get('description') as string,
+        basePrice: Number(formData.get('basePrice')),
+        durationMinutes: Number(formData.get('durationMinutes')),
+        category: formData.get('category') as string,
+        status: formData.get('status') as 'active' | 'inactive',
+      };
+      
+      console.log('Updating service with ID:', editingService.id, 'Data:', serviceData);
       const updatedService = await updateService(editingService.id, serviceData);
+      console.log('Service updated successfully:', updatedService);
+      
       setServices(services.map(service => 
         service.id === updatedService.id ? updatedService : service
       ));

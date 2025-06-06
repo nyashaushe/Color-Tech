@@ -36,12 +36,14 @@ const registerSchema = z.object({
   path: ["confirmPassword"],
 });
 
+type RegisterFormValues = z.infer<typeof registerSchema>;
+
 export function Register() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<RegisterFormData & { confirmPassword: string }>({
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: '',
@@ -56,7 +58,7 @@ export function Register() {
     try {
       setIsLoading(true);
       const { confirmPassword, ...registerData } = data;
-      const response = await api.post<AuthResponse>('/users/register', {
+      const response = await api.post<AuthResponse>('/auth/register', {
         ...registerData,
         role: 'client',
       });

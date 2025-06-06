@@ -50,20 +50,20 @@ const HeroCarousel = () => {
           {slides.map((slide, index) => (
             <CarouselItem key={index} className="relative h-[600px] w-full">
               {/* Gradient overlay */}
-              <div 
+              <div>
                 className="absolute inset-0 opacity-30 mix-blend-overlay"
                 style={{
                   background: `linear-gradient(45deg, ${slide.gradientFrom}, ${slide.gradientTo})`
                 }}
-              />
+              </div>
               
               {/* Paint splash effect */}
-              <div 
+              <div>
                 className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-overlay"
                 style={{
                   background: `radial-gradient(circle at 50% 50%, ${slide.gradientFrom}, ${slide.gradientTo})`
                 }}
-              />
+              </div>
 
               {/* Main image */}
               <img
@@ -79,13 +79,13 @@ const HeroCarousel = () => {
 
               {/* Dynamic color drips effect */}
               <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-black/50"></div>
-              <div 
+              <div>
                 className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent"
                 style={{
                   background: `linear-gradient(to bottom, transparent, ${slide.gradientFrom})`,
                   opacity: 0.7
                 }}
-              />
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>

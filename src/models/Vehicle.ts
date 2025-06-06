@@ -37,8 +37,8 @@ class VehicleModel {
         ORDER BY created_at DESC
         LIMIT $1 OFFSET $2
       `;
-      const [rows] = await db.query(query, [limit, offset]);
-      return rows;
+      const result = await db.query(query, [limit, offset]);
+      return result.rows;
     } catch (error) {
       logger.error('Database error in VehicleModel.findAll:', error);
       throw error;
@@ -46,13 +46,13 @@ class VehicleModel {
   }
 
   /**
-   * Count total vehicles for pagination
+   * Count vehicles for pagination
    */
   async countVehicles(): Promise<number> {
     try {
       const query = 'SELECT COUNT(*) AS count FROM vehicles';
-      const [rows] = await db.query(query);
-      return parseInt(rows[0].count);
+      const result = await db.query(query);
+      return parseInt(result.rows[0].count);
     } catch (error) {
       logger.error('Database error in VehicleModel.countVehicles:', error);
       throw error;
@@ -70,8 +70,8 @@ class VehicleModel {
         ORDER BY created_at DESC
         LIMIT $2 OFFSET $3
       `;
-      const [rows] = await db.query(query, [userId, limit, offset]);
-      return rows;
+      const result = await db.query(query, [userId, limit, offset]);
+      return result.rows;
     } catch (error) {
       logger.error('Database error in VehicleModel.findByUserId:', error);
       throw error;
@@ -84,8 +84,8 @@ class VehicleModel {
   async countByUserId(userId: number): Promise<number> {
     try {
       const query = 'SELECT COUNT(*) AS count FROM vehicles WHERE user_id = $1';
-      const [rows] = await db.query(query, [userId]);
-      return parseInt(rows[0].count);
+      const result = await db.query(query, [userId]);
+      return parseInt(result.rows[0].count);
     } catch (error) {
       logger.error('Database error in VehicleModel.countByUserId:', error);
       throw error;
@@ -98,8 +98,8 @@ class VehicleModel {
   async findById(id: number): Promise<Vehicle | null> {
     try {
       const query = 'SELECT * FROM vehicles WHERE id = $1';
-      const [rows] = await db.query(query, [id]);
-      return rows.length ? rows[0] : null;
+      const result = await db.query(query, [id]);
+      return result.rows.length ? result.rows[0] : null;
     } catch (error) {
       logger.error('Database error in VehicleModel.findById:', error);
       throw error;
@@ -123,9 +123,9 @@ class VehicleModel {
       `;
       
       const params = [user_id, make, model, year, color, license_plate, vin, notes];
-      const [result] = await db.query(query, params);
+      const result = await db.query(query, params);
       
-      const id = result[0].id;
+      const id = result.rows[0].id;
       return this.findById(id) as Promise<Vehicle>;
     } catch (error) {
       logger.error('Database error in VehicleModel.create:', error);
@@ -169,7 +169,7 @@ class VehicleModel {
         RETURNING *
       `;
       
-      await db.query(query, params);
+      const result = await db.query(query, params);
       return this.findById(id);
     } catch (error) {
       logger.error('Database error in VehicleModel.update:', error);
@@ -186,16 +186,16 @@ class VehicleModel {
       const checkQuery = `
         SELECT COUNT(*) AS count FROM bookings WHERE vehicle_id = $1
       `;
-      const [checkResult] = await db.query(checkQuery, [id]);
+      const checkResult = await db.query(checkQuery, [id]);
       
-      if (parseInt(checkResult[0].count) > 0) {
+      if (parseInt(checkResult.rows[0].count) > 0) {
         // Vehicle is in use, cannot delete
         return false;
       }
       
       const query = 'DELETE FROM vehicles WHERE id = $1 RETURNING id';
-      const [result] = await db.query(query, [id]);
-      return result.length > 0;
+      const result = await db.query(query, [id]);
+      return result.rows.length > 0;
     } catch (error) {
       logger.error('Database error in VehicleModel.delete:', error);
       throw error;
@@ -203,4 +203,4 @@ class VehicleModel {
   }
 }
 
-export default new VehicleModel(); 
+export default new VehicleModel();
