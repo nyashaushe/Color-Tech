@@ -43,7 +43,7 @@ export const metadata = {
       "Color Tech offers expert auto body repair, panel beating, wheel alignment, spray painting, rust protection, and dent removal services in Harare, Zimbabwe. 100% quality guaranteed.",
   },
   verification: {
-    google: "your-google-verification-code", // Replace with actual verification code
+    google: "NFamPz4Jov-KORDtBa048gmGvvXWBNUkROFgFvrruN4", // Replace with actual verification code
   },
 };
 
